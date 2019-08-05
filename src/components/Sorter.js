@@ -1,10 +1,23 @@
 import React from 'react';
 
-const Sorter = () => {
+const Sorter = (props) => {
   return (
-    <div>
-      
-    </div>
+    <>
+      <label>
+        Sort by:
+        <select name="sort_by" onChange={props.updateQueries}>
+          <option value="votes">Votes</option>
+          <option value="created_at">Created at</option>
+        </select>
+      </label>
+      <label>
+        Order:
+        <select name="order" onChange={props.updateQueries}>
+          <option value="desc">Descending</option>
+          <option value="asc">Ascending</option>
+        </select>
+      </label>
+    </>
   );
 };
 
