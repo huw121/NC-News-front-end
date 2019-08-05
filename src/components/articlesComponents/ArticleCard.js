@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from '@reach/router';
-import Votes from './Votes';
+import Votes from '../Votes';
 
 class ArticleCard extends Component {
   state = {

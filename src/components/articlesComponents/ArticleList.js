@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import * as api from '../api';
+import * as api from '../../api';
 import ArticleCard from './ArticleCard';
 import Sorter from './Sorter';
 
@@ -20,7 +20,7 @@ class ArticleList extends Component {
     return (
       <section className="articles">
         <Sorter updateQueries={this.updateQueries} />
-        <button onClick={() => { this.fetchArticles(page - 1) }}>&lt;</button>
+        <button onClick={() => { this.fetchArticles(page - 1 <= 0 ? 1 : page - 1) }}>&lt;</button>
         <p>Page {page}</p>
         <button onClick={() => { this.fetchArticles(page + 1) }}>&gt;</button>
         {articles.map(article => {
@@ -30,9 +30,9 @@ class ArticleList extends Component {
     );
   }
 
-  componentDidUpdate(prevProps, {queries: {sort_by, order}}) {
-    const {sort_by: newSort, order: newOrder} = this.state.queries;
-    if(newSort !== sort_by || newOrder !== order) this.fetchArticles(1);
+  componentDidUpdate(prevProps, { queries: { sort_by, order } }) {
+    const { sort_by: newSort, order: newOrder } = this.state.queries;
+    if (newSort !== sort_by || newOrder !== order) this.fetchArticles(1);
   }
 
   componentDidMount() {

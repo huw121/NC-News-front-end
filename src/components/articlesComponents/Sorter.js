@@ -8,6 +8,7 @@ const Sorter = (props) => {
         <select name="sort_by" onChange={props.updateQueries}>
           <option value="votes">Votes</option>
           <option value="created_at">Created at</option>
+          <option value="comment_count">Comment Count</option>
         </select>
       </label>
       <label>
