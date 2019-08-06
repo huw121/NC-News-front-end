@@ -4,7 +4,7 @@ const request = axios.create({
   baseURL: 'https://nc-news-huw.herokuapp.com/api'
 })
 
-export const getData = (endpoint, queries = null) => {
+export const getData = (endpoint, queries) => {
   const URL = `/${endpoint}`;
   return request.get(URL, { params: queries })
     .then(({ data }) => {
