@@ -9,6 +9,8 @@ class ArticleList extends Component {
     articles: null,
     isLoading: true,
     queries: {
+      topic: null,
+      author: null,
       order: 'desc',
       sort_by: 'votes'
     }
@@ -30,12 +32,21 @@ class ArticleList extends Component {
     );
   }
 
-  componentDidUpdate(prevProps, { queries: { sort_by, order } }) {
-    const { sort_by: newSort, order: newOrder } = this.state.queries;
-    if (newSort !== sort_by || newOrder !== order) this.fetchArticles(1);
+  componentDidUpdate(prevProps, { queries }) {
+    let check = false;
+    for (let prop in queries) {
+      if (this.state.queries[prop] !== queries[prop]) { check = true; }
+    }
+    if (check) this.fetchArticles(1)
+    else if (this.props.topic !== prevProps.topic) {
+      this.updateTopicOrAuthor(); 
+    }
   }
 
   componentDidMount() {
+    if (this.props.topic) {
+      this.updateTopicOrAuthor();
+    }
     this.fetchArticles(1);
   }
 
@@ -45,6 +56,12 @@ class ArticleList extends Component {
         ...currentState.queries,
         [name]: value
       }
+    }))
+  }
+
+  updateTopicOrAuthor = () => {
+    this.setState(currentState => ({
+      queries: { ...currentState.queries, topic: this.props.topic, author: this.props.author }
     }))
   }
 
