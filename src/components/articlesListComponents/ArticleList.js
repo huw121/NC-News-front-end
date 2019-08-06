@@ -6,6 +6,7 @@ import Sorter from './Sorter';
 class ArticleList extends Component {
   state = {
     page: 1,
+    maxPage: 0,
     articles: null,
     isLoading: true,
     queries: {
@@ -20,14 +21,18 @@ class ArticleList extends Component {
     return (
       <section className="articles">
         <Sorter updateQueries={this.updateQueries} />
-        <button onClick={() => { this.fetchArticles(page - 1 <= 0 ? 1 : page - 1) }}>&lt;</button>
+        <button name="down" onClick={this.handlePagination}>&lt;</button>
         <p>Page {page}</p>
-        <button onClick={() => { this.fetchArticles(page + 1) }}>&gt;</button>
+        <button name="up" onClick={this.handlePagination}>&gt;</button>
         {articles.map(article => {
           return <ArticleCard key={article.article_id} {...article} />
         })}
       </section>
     );
+  }
+
+  componentDidMount() {
+    this.fetchArticles(1);
   }
 
   componentDidUpdate(prevProps, { queries }) {
@@ -39,10 +44,6 @@ class ArticleList extends Component {
     if (check) this.fetchArticles(1)
   }
 
-  componentDidMount() {
-    this.fetchArticles(1);
-  }
-
   updateQueries = ({ target: { value, name } }) => {
     this.setState(currentState => ({
       queries: {
@@ -52,11 +53,19 @@ class ArticleList extends Component {
     }))
   }
 
+  handlePagination = ({ target: { name } }) => {
+    const p = this.state.page;
+    const pMax = this.state.maxPage;
+    console.log(p, pMax, name);
+    if (name === "up" && p + 1 <= pMax) this.fetchArticles(p + 1);
+    if (name === "down" && p - 1 >= 1) this.fetchArticles(p - 1);
+  }
+
   fetchArticles = (p) => {
     const { topic, author } = this.props;
     api.getData('articles', { ...this.state.queries, p, topic, author })
-      .then(({ articles }) => {
-        if (articles.length) this.setState({ articles, isLoading: false, page: p });
+      .then(({ articles, totalCount }) => {
+        this.setState({ articles, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 10) });
       })
   }
 }
