@@ -2,17 +2,16 @@ import React, { Component } from 'react';
 import * as api from '../../api';
 import { Link } from '@reach/router';
 import Votes from '../Votes';
-import Comments from './CommentsList';
+import CommentsList from './CommentsList';
 
 class IndividualArticlePage extends Component {
   state = {
     article: null,
     isLoading: true,
-    showComments: false
   }
 
   render() {
-    const { isLoading, article, showComments } = this.state;
+    const { isLoading, article } = this.state;
     if (isLoading) return <p>Loading...</p>
     const { author, body, comment_count, created_at, title, topic, votes, article_id } = article;
     return (
@@ -24,8 +23,7 @@ class IndividualArticlePage extends Component {
         <Link to={`/users/${author}`}><p>created by: {author}</p></Link>
         <p>{body}</p>
         <p>comments: {comment_count}</p>
-        <input type="button" onClick={this.toggleComments} value={showComments ? "hide comments" : "show comments"} />
-        {showComments && <Comments article_id={article_id} />}
+        <CommentsList article_id={article_id} />
       </article>
     );
   }
@@ -40,13 +38,6 @@ class IndividualArticlePage extends Component {
         this.setState({ article, isLoading: false })
       })
   }
-
-  toggleComments = () => {
-    this.setState(currentState => ({
-      showComments: !currentState.showComments
-    }))
-  }
-
 }
 
 export default IndividualArticlePage;

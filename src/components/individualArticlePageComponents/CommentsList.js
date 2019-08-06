@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
 import CommentCard from './CommentCard';
-import Sorter from '../articlesListComponents/Sorter';
+import Sorter from '../Sorter';
+import Paginator from '../Paginator';
+import CommentForm from './CommentForm';
 
-class Comments extends Component {
+class CommentsList extends Component {
   state = {
     comments: null,
-    isLoading: true,
+    isLoading: false,
+    showComments: false,
+    showForm: false,
     page: 1,
     maxPage: 1,
     queries: {
@@ -16,30 +20,35 @@ class Comments extends Component {
   }
 
   render() {
-    const { comments, isLoading, page } = this.state;
-    if (isLoading) return <p>Loading...</p>
+    const { comments, isLoading, page, showComments, maxPage, showForm } = this.state;
     return (
       <section>
-        <Sorter updateQueries={this.updateQueries} includeCommentCount={false} />
-        <button name="down" onClick={this.handlePagination}>&lt;</button>
-        <p>Page {page}</p>
-        <button name="up" onClick={this.handlePagination}>&gt;</button>
-        {comments.map(comment => {
-          return <CommentCard key={comment.comment_id} {...comment} />
-        })}
+        <input type="button" onClick={this.toggleComments} value={showComments ? "hide comments" : "show comments"} />
+        {showComments && (isLoading
+          ? <p>Loading...</p>
+          : (
+            <>
+              <input type="button" disabled onClick={this.toggleForm} value={showForm ? "hide form" : "post comment"} />
+              {showForm && <CommentForm postComment={this.postComment} id={this.props.article_id}/>}
+              <Sorter updateQueries={this.updateQueries} includeCommentCount={false} />
+              <Paginator fetchMethod={this.fetchComments} p={page} pMax={maxPage} />
+              {comments.map(comment => {
+                return <CommentCard key={comment.comment_id} {...comment} />
+              })}
+            </>
+          )
+        )}
       </section>
     );
   }
 
-  componentDidMount() {
-    this.fetchComments(1)
-  }
-
-  componentDidUpdate(prevProps, { queries }) {
+  componentDidUpdate(prevProps, { queries, showComments }) {
+    const { queries: newQueries, showComments: newShowComments } = this.state;
     let check = false;
     for (let prop in queries) {
-      if (this.state.queries[prop] !== queries[prop]) check = true;
+      if (newQueries[prop] !== queries[prop]) check = true;
     }
+    if (newShowComments && newShowComments !== showComments) check = true;
     if (check) this.fetchComments(1);
   }
 
@@ -52,19 +61,33 @@ class Comments extends Component {
     }))
   }
 
-  handlePagination = ({ target: { name } }) => {
-    const p = this.state.page;
-    const pMax = this.state.maxPage;
-    if (name === "up" && p + 1 <= pMax) this.fetchComments(p + 1);
-    if (name === "down" && p - 1 >= 1) this.fetchComments(p - 1);
+  toggleComments = () => {
+    this.setState(({ showComments }) => ({
+      showComments: !showComments,
+      isLoading: !showComments ? true : false
+    }))
+  }
+
+  toggleForm = () => {
+    this.setState(currentState => ({
+      showForm: !currentState.showForm
+    }))
+  }
+
+  postComment = (comment) => {
+    this.setState(({ comments }) => ({
+      comments: [comment, ...comments]
+    }))
   }
 
   fetchComments = (p) => {
-    api.getData(`articles/${this.props.article_id}/comments`, { ...this.state.queries, p })
-      .then(({ comments, totalCount }) => {
-        this.setState({ comments, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 10) });
-      })
+    this.setState({ isLoading: true }, () => {
+      api.getData(`articles/${this.props.article_id}/comments`, { ...this.state.queries, p })
+        .then(({ comments, totalCount }) => {
+          this.setState({ comments, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 10) });
+        })
+    })
   }
 }
 
-export default Comments;
+export default CommentsList;

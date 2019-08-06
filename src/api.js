@@ -19,3 +19,8 @@ export const changeVote = (endpoint, id, value) => {
       return data;
     })
 }
+
+export const postComment = (article_id, body) => {
+  return request.post(`/articles/${article_id}/comments`, { body })
+    .then(({ data: { comment } }) => comment)
+}

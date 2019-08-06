@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
 import ArticleCard from './ArticleCard';
-import Sorter from './Sorter';
+import Sorter from '../Sorter';
+import Paginator from '../Paginator';
 
 class ArticleList extends Component {
   state = {
@@ -16,14 +17,12 @@ class ArticleList extends Component {
   }
 
   render() {
-    const { isLoading, articles, page } = this.state;
+    const { isLoading, articles, page, maxPage } = this.state;
     if (isLoading) return <p>Loading...</p>
     return (
       <section className="articles">
-        <Sorter updateQueries={this.updateQueries} includeCommentCount={true}/>
-        <button name="down" onClick={this.handlePagination}>&lt;</button>
-        <p>Page {page}</p>
-        <button name="up" onClick={this.handlePagination}>&gt;</button>
+        <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
+        <Paginator fetchMethod={this.fetchArticles} p={page} pMax={maxPage} />
         {articles.map(article => {
           return <ArticleCard key={article.article_id} {...article} />
         })}
