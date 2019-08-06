@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import * as api from '../../api';
 import { Link } from '@reach/router';
 import Votes from '../Votes';
-import Comments from './Comments';
+import Comments from './CommentsList';
 
 class IndividualArticlePage extends Component {
   state = {
@@ -16,7 +16,7 @@ class IndividualArticlePage extends Component {
     if (isLoading) return <p>Loading...</p>
     const { author, body, comment_count, created_at, title, topic, votes, article_id } = article;
     return (
-      <article>
+      <article className="articles">
         <Votes votes={votes} id={article_id} target="articles" />
         <Link to={`/topics/${topic}`}><p>{topic}</p></Link>
         <h1>{title}</h1>

@@ -6,7 +6,7 @@ import Sorter from './Sorter';
 class ArticleList extends Component {
   state = {
     page: 1,
-    maxPage: 0,
+    maxPage: 1,
     articles: null,
     isLoading: true,
     queries: {
@@ -20,7 +20,7 @@ class ArticleList extends Component {
     if (isLoading) return <p>Loading...</p>
     return (
       <section className="articles">
-        <Sorter updateQueries={this.updateQueries} />
+        <Sorter updateQueries={this.updateQueries} includeCommentCount={true}/>
         <button name="down" onClick={this.handlePagination}>&lt;</button>
         <p>Page {page}</p>
         <button name="up" onClick={this.handlePagination}>&gt;</button>
@@ -56,7 +56,6 @@ class ArticleList extends Component {
   handlePagination = ({ target: { name } }) => {
     const p = this.state.page;
     const pMax = this.state.maxPage;
-    console.log(p, pMax, name);
     if (name === "up" && p + 1 <= pMax) this.fetchArticles(p + 1);
     if (name === "down" && p - 1 >= 1) this.fetchArticles(p - 1);
   }
