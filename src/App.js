@@ -16,7 +16,7 @@ class App extends Component {
     const { user } = this.state;
     return (
       <div className="App">
-        <Header />
+        <Header handleUserChange={this.handleUserChange} />
         <Sidebar />
         <Router>
           <ArticleList path="/" />
@@ -28,6 +28,10 @@ class App extends Component {
         </Router>
       </div>
     );
+  }
+
+  handleUserChange = ({ target: { value: user } }) => {
+    this.setState({ user });
   }
 }
 
