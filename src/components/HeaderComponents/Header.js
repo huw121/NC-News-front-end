@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from '@reach/router';
-import * as api from '../api';
+import * as api from '../../api';
+import UserDropdown from './UserDropdown';
 
 class Header extends Component {
   state = {
@@ -9,22 +10,17 @@ class Header extends Component {
   }
   render() {
     const { users, isLoading } = this.state;
+    const { user, handleUserChange } = this.props;
     return (
       <header className="header">
         <Link to="/"><h1>NC News</h1></Link>
         {isLoading
           ? <p>Loading...</p>
           : (
-            <label>
-              User:
-            <select onChange={this.props.handleUserChange}>
-                {users.map(({ username }) => (
-                  <option key={username}>{username}</option>
-                ))}
-              </select>
-            </label>
-          )
-        }
+            <UserDropdown handleUserChange={handleUserChange} users={users} user={user}/>
+        )
+      }
+          <Link to={`/users/${user}/profile`}><button>see profile</button></Link>
       </header>
     );
   };

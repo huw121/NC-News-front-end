@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import Header from './components/Header';
+import Header from './components/HeaderComponents/Header';
 import ArticleList from './components/articlesListComponents/ArticleList';
 import Sidebar from './components/Sidebar';
 import { Router } from '@reach/router';
 import TopicsList from './components/topicsComponents/TopicsList';
 import IndividualArticlePage from './components/individualArticlePageComponents/IndividualArticlePage';
+import UserProfile from './components/UserProfile';
 
 class App extends Component {
   state = {
@@ -16,7 +17,7 @@ class App extends Component {
     const { user } = this.state;
     return (
       <div className="App">
-        <Header handleUserChange={this.handleUserChange} />
+        <Header handleUserChange={this.handleUserChange} user={user} />
         <Sidebar />
         <Router>
           <ArticleList path="/" />
@@ -25,6 +26,7 @@ class App extends Component {
           <ArticleList path="/topics/:topic" />
           <ArticleList path="/users/:author" />
           <IndividualArticlePage path="/articles/:article_id" user={user} />
+          <UserProfile path="/users/:username/profile" />
         </Router>
       </div>
     );

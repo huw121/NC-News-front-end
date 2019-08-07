@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import * as api from '../api';
-import { Link, navigate } from '@reach/router';
+import { Link } from '@reach/router';
 
 class Sidebar extends Component {
   state = {
@@ -16,7 +16,7 @@ class Sidebar extends Component {
         {topics.map(topic => {
           return <li key={topic.slug}><Link to={`topics/${topic.slug}`}>{topic.slug}</Link></li>
         })}
-        <button onClick={this.handleNavigation}>See all topics</button>
+        <Link to="/topics"><button>See all topics</button></Link>
       </nav>
     );
   }
@@ -31,11 +31,6 @@ class Sidebar extends Component {
         this.setState({ topics, isLoading: false })
       })
   }
-
-  handleNavigation = () => {
-    navigate('/topics');
-  }
-
 }
 
 export default Sidebar;
