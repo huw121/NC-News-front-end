@@ -52,13 +52,6 @@ class ArticleList extends Component {
     }))
   }
 
-  handlePagination = ({ target: { name } }) => {
-    const p = this.state.page;
-    const pMax = this.state.maxPage;
-    if (name === "up" && p + 1 <= pMax) this.fetchArticles(p + 1);
-    if (name === "down" && p - 1 >= 1) this.fetchArticles(p - 1);
-  }
-
   fetchArticles = (p) => {
     const { topic, author } = this.props;
     api.getData('articles', { ...this.state.queries, p, topic, author })

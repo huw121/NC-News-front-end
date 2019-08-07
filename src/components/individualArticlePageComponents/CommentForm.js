@@ -9,7 +9,7 @@ class CommentForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleCommentSubmit}>
-        <textarea onChange={this.handleBodyChange} value={this.state.body}></textarea>
+        <textarea onChange={this.handleBodyChange} value={this.state.body} required></textarea>
         <button type="submit">submit comment</button>
       </form>
     );
@@ -20,11 +20,11 @@ class CommentForm extends Component {
   }
 
   handleCommentSubmit = (e) => {
+    const { id, user, addNewComment } = this.props;
     e.preventDefault();
-    api.postComment(this.props.id, this.state.body)
+    api.postComment(id, user, this.state.body)
       .then(comment => {
-        // this.postComment(comment);
-        console.log(comment);
+        addNewComment(comment);
       })
   }
 }

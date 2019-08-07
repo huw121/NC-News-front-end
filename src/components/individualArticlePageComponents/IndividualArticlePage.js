@@ -23,7 +23,7 @@ class IndividualArticlePage extends Component {
         <Link to={`/users/${author}`}><p>created by: {author}</p></Link>
         <p>{body}</p>
         <p>comments: {comment_count}</p>
-        <CommentsList article_id={article_id} />
+        <CommentsList article_id={article_id} user={this.props.user}/>
       </article>
     );
   }

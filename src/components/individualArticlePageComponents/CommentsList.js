@@ -11,6 +11,7 @@ class CommentsList extends Component {
     isLoading: false,
     showComments: false,
     showForm: false,
+    deletedComment: null,
     page: 1,
     maxPage: 1,
     queries: {
@@ -20,24 +21,24 @@ class CommentsList extends Component {
   }
 
   render() {
-    const { comments, isLoading, page, showComments, maxPage, showForm } = this.state;
+    const { comments, isLoading, page, showComments, maxPage, showForm, deletedComment } = this.state;
+    const { article_id, user } = this.props;
     return (
       <section>
         <input type="button" onClick={this.toggleComments} value={showComments ? "hide comments" : "show comments"} />
-        {showComments && (isLoading
-          ? <p>Loading...</p>
-          : (
-            <>
-              <input type="button" disabled onClick={this.toggleForm} value={showForm ? "hide form" : "post comment"} />
-              {showForm && <CommentForm postComment={this.postComment} id={this.props.article_id}/>}
-              <Sorter updateQueries={this.updateQueries} includeCommentCount={false} />
-              <Paginator fetchMethod={this.fetchComments} p={page} pMax={maxPage} />
-              {comments.map(comment => {
-                return <CommentCard key={comment.comment_id} {...comment} />
-              })}
-            </>
-          )
-        )}
+        {showComments && (
+          <>
+            <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post comment"} />
+            {showForm && <CommentForm addNewComment={this.addNewComment} id={article_id} user={user} />}
+            <Sorter updateQueries={this.updateQueries} includeCommentCount={false} />
+            <Paginator fetchMethod={this.fetchComments} p={page} pMax={maxPage} />
+            {deletedComment && <p>comment {deletedComment} successfully deleted!</p>}
+            {!isLoading && comments.map(comment => {
+              return <CommentCard key={comment.comment_id} {...comment} user={user} commentDeletion={this.commentDeletion}/>
+            })}
+          </>
+        )
+        }
       </section>
     );
   }
@@ -74,17 +75,25 @@ class CommentsList extends Component {
     }))
   }
 
-  postComment = (comment) => {
+  addNewComment = (comment) => {
     this.setState(({ comments }) => ({
-      comments: [comment, ...comments]
+      comments: [comment, ...comments],
+      showForm: false
+    }))
+  }
+
+  commentDeletion = (id) => {
+    this.setState(({comments}) => ({
+      comments: comments.filter(comment => comment.comment_id !== id),
+      deletedComment: id
     }))
   }
 
   fetchComments = (p) => {
     this.setState({ isLoading: true }, () => {
-      api.getData(`articles/${this.props.article_id}/comments`, { ...this.state.queries, p })
+      api.getData(`articles/${this.props.article_id}/comments`, { ...this.state.queries, })
         .then(({ comments, totalCount }) => {
-          this.setState({ comments, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 10) });
+          this.setState({ comments, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 10), deletedComment: null });
         })
     })
   }
