@@ -21,10 +21,11 @@ class ArticleList extends Component {
     if (isLoading) return <p>Loading...</p>
     return (
       <section className="articles">
+      {this.props.location.state.articleDeleted && <p>article successfully deleted!</p>}
         <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
         <Paginator fetchMethod={this.fetchArticles} p={page} pMax={maxPage} />
         {articles.map(article => {
-          return <ArticleCard key={article.article_id} {...article} />
+          return <ArticleCard key={article.article_id} {...article} path={this.props.uri} />
         })}
       </section>
     );
