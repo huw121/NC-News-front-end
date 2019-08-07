@@ -8,10 +8,11 @@ class IndividualArticlePage extends Component {
   state = {
     article: null,
     isLoading: true,
+    showComments: false
   }
 
   render() {
-    const { isLoading, article } = this.state;
+    const { isLoading, article, showComments } = this.state;
     if (isLoading) return <p>Loading...</p>
     const { author, body, comment_count, created_at, title, topic, votes, article_id } = article;
     return (
@@ -23,13 +24,20 @@ class IndividualArticlePage extends Component {
         <Link to={`/users/${author}`}><p>created by: {author}</p></Link>
         <p>{body}</p>
         <p>comments: {comment_count}</p>
-        <CommentsList article_id={article_id} user={this.props.user}/>
+        <input type="button" onClick={this.toggleComments} value={showComments ? "hide comments" : "show comments"} />
+        {showComments && <CommentsList article_id={article_id} user={this.props.user}/>}
       </article>
     );
   }
 
   componentDidMount() {
     this.fetchArticle();
+  }
+
+  toggleComments = () => {
+    this.setState(({ showComments }) => ({
+      showComments: !showComments
+    }))
   }
 
   fetchArticle() {

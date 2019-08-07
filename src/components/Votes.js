@@ -6,11 +6,12 @@ class Votes extends Component {
     voteIncrement: 0
   }
   render() {
+    const { voteIncrement } = this.state;
     return (
       <div>
-        <button onClick={() => { this.changeVote(1) }}>upvote</button>
+        <button onClick={() => { this.changeVote(1) }} disabled={voteIncrement > 0}>upvote</button>
         <p>votes: {this.props.votes + this.state.voteIncrement}</p>
-        <button onClick={() => { this.changeVote(-1) }}>downvote</button>
+        <button onClick={() => { this.changeVote(-1) }} disabled={voteIncrement < 0}>downvote</button>
       </div>
     );
   }

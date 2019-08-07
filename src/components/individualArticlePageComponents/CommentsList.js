@@ -8,8 +8,7 @@ import CommentForm from './CommentForm';
 class CommentsList extends Component {
   state = {
     comments: null,
-    isLoading: false,
-    showComments: false,
+    isLoading: true,
     showForm: false,
     deletedComment: null,
     page: 1,
@@ -21,35 +20,32 @@ class CommentsList extends Component {
   }
 
   render() {
-    const { comments, isLoading, page, showComments, maxPage, showForm, deletedComment } = this.state;
+    const { comments, isLoading, page, maxPage, showForm, deletedComment } = this.state;
     const { article_id, user } = this.props;
     return (
       <section>
-        <input type="button" onClick={this.toggleComments} value={showComments ? "hide comments" : "show comments"} />
-        {showComments && (
-          <>
-            <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post comment"} />
-            {showForm && <CommentForm addNewComment={this.addNewComment} id={article_id} user={user} />}
-            <Sorter updateQueries={this.updateQueries} includeCommentCount={false} />
-            <Paginator fetchMethod={this.fetchComments} p={page} pMax={maxPage} />
-            {deletedComment && <p>comment {deletedComment} successfully deleted!</p>}
-            {!isLoading && comments.map(comment => {
-              return <CommentCard key={comment.comment_id} {...comment} user={user} commentDeletion={this.commentDeletion}/>
-            })}
-          </>
-        )
-        }
+        <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post comment"} />
+        {showForm && <CommentForm addNewComment={this.addNewComment} id={article_id} user={user} />}
+        <Sorter updateQueries={this.updateQueries} includeCommentCount={false} />
+        <Paginator fetchMethod={this.fetchComments} p={page} pMax={maxPage} />
+        {deletedComment && <p>comment {deletedComment} successfully deleted!</p>}
+        {!isLoading && comments.map(comment => {
+          return <CommentCard key={comment.comment_id} {...comment} user={user} commentDeletion={this.commentDeletion} />
+        })}
       </section>
     );
   }
 
-  componentDidUpdate(prevProps, { queries, showComments }) {
-    const { queries: newQueries, showComments: newShowComments } = this.state;
+  componentDidMount() {
+    this.fetchComments(1);
+  }
+
+  componentDidUpdate(prevProps, { queries }) {
+    const { queries: newQueries } = this.state;
     let check = false;
     for (let prop in queries) {
       if (newQueries[prop] !== queries[prop]) check = true;
     }
-    if (newShowComments && newShowComments !== showComments) check = true;
     if (check) this.fetchComments(1);
   }
 
@@ -59,13 +55,6 @@ class CommentsList extends Component {
         ...currentState.queries,
         [name]: value
       }
-    }))
-  }
-
-  toggleComments = () => {
-    this.setState(({ showComments }) => ({
-      showComments: !showComments,
-      isLoading: !showComments ? true : false
     }))
   }
 
@@ -83,19 +72,17 @@ class CommentsList extends Component {
   }
 
   commentDeletion = (id) => {
-    this.setState(({comments}) => ({
+    this.setState(({ comments }) => ({
       comments: comments.filter(comment => comment.comment_id !== id),
       deletedComment: id
     }))
   }
 
   fetchComments = (p) => {
-    this.setState({ isLoading: true }, () => {
-      api.getData(`articles/${this.props.article_id}/comments`, { ...this.state.queries, })
-        .then(({ comments, totalCount }) => {
-          this.setState({ comments, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 10), deletedComment: null });
-        })
-    })
+    api.getData(`articles/${this.props.article_id}/comments`, { ...this.state.queries, })
+      .then(({ comments, totalCount }) => {
+        this.setState({ comments, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 10), deletedComment: null });
+      })
   }
 }
 
