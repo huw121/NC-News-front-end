@@ -4,6 +4,7 @@ import ArticleCard from './ArticleCard';
 import Sorter from '../Sorter';
 import Paginator from '../Paginator';
 import ArticleForm from './ArticleForm';
+import ErrorComponent from '../ErrorComponent';
 
 class ArticleList extends Component {
   state = {
@@ -12,6 +13,7 @@ class ArticleList extends Component {
     articles: null,
     isLoading: true,
     showForm: false,
+    error: null,
     queries: {
       limit: 5,
       order: 'desc',
@@ -20,10 +22,11 @@ class ArticleList extends Component {
   }
 
   render() {
-    const { isLoading, articles, page, maxPage, showForm } = this.state;
+    const { isLoading, articles, page, maxPage, showForm, error } = this.state;
     const { location: { state: locationState }, user } = this.props;
     const articleDeleted = locationState ? locationState.articleDeleted : null;
     if (isLoading) return <p>Loading...</p>
+    if (error) return <ErrorComponent error={error} />
     return (
       <section className="articles">
         {articleDeleted && <p>article successfully deleted!</p>}
@@ -94,6 +97,12 @@ class ArticleList extends Component {
     api.getData('articles', { ...this.state.queries, p, topic, author })
       .then(({ articles, totalCount }) => {
         this.setState({ articles, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5) });
+      })
+      .catch(({ response: { data: { message }, status } }) => {
+        this.setState({
+          error: { message, status },
+          isLoading: false
+        })
       })
   }
 }

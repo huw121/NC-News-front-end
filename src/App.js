@@ -8,10 +8,12 @@ import TopicsList from './components/topicsComponents/TopicsList';
 import IndividualArticlePage from './components/individualArticlePageComponents/IndividualArticlePage';
 import UserProfile from './components/UserProfile';
 import SignUpPage from './components/SignUpPage';
+import ErrorComponent from './components/ErrorComponent';
 
 class App extends Component {
   state = {
-    user: 'jessjelly'
+    user: 'jessjelly',
+    newTopics: false
   }
 
   render() {
@@ -19,16 +21,17 @@ class App extends Component {
     return (
       <div className="App">
         <Header handleUserChange={this.handleUserChange} user={user} />
-        <Sidebar />
+        <Sidebar handleNewTopics={this.handleNewTopics} newTopics={this.state.newTopics} />
         <Router>
-          <ArticleList path="/" user={user}/>
-          <ArticleList path="/articles" user={user}/>
-          <ArticleList path="/topics/:topic" user={user}/>
-          <ArticleList path="/users/:author" user={user}/>
-          <TopicsList path="/topics" />
+          <ArticleList path="/" user={user} />
+          <ArticleList path="/articles" user={user} />
+          <ArticleList path="/topics/:topic" user={user} />
+          <ArticleList path="/users/:author" user={user} />
+          <TopicsList path="/topics" handleNewTopics={this.handleNewTopics}/>
           <IndividualArticlePage path="/articles/:article_id" user={user} />
           <UserProfile path="/:username/profile" />
-          <SignUpPage path="/signup" handleUserChange={this.handleUserChange}/>
+          <SignUpPage path="/signup" handleUserChange={this.handleUserChange} />
+          <ErrorComponent default error={{ message: "route not found", status: 404 }} />
         </Router>
       </div>
     );
@@ -36,6 +39,12 @@ class App extends Component {
 
   handleUserChange = (user) => {
     this.setState({ user });
+  }
+
+  handleNewTopics = () => {
+    this.setState(({newTopics}) => ({
+      newTopics: !newTopics
+    }))
   }
 }
 

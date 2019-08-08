@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
 import * as api from '../api';
 import { Link } from '@reach/router'
+import ErrorComponent from './ErrorComponent';
 
 class UserProfile extends Component {
   state = {
     user: null,
-    isLoading: true
+    isLoading: true,
+    error: null
   }
 
   render() {
-    const { user, isLoading } = this.state;
+    const { user, isLoading, error } = this.state;
     if (isLoading) return <p>Loading...</p>
+    if (error) return <ErrorComponent error={error} />
     const { username, name, avatar_url } = user;
     return (
       <article>
@@ -34,6 +37,12 @@ class UserProfile extends Component {
     api.getData(`users/${this.props.username}`)
       .then(({ user }) => {
         this.setState({ user, isLoading: false });
+      })
+      .catch(({ response: { data: { message }, status } }) => {
+        this.setState({
+          error: { message, status },
+          isLoading: false
+        })
       })
   }
 }

@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
+import ErrorComponent from '../ErrorComponent';
 
 class TopicForm extends Component {
   state = {
     slug: '',
-    description: ''
+    description: '',
+    error: null
   }
 
   render() {
-    const { slug, description } = this.state;
+    const { slug, description, error } = this.state;
+    if (error) return <ErrorComponent error={error} />
     return (
       <form onSubmit={this.handleTopicSubmit}>
         <label>
@@ -36,6 +39,11 @@ class TopicForm extends Component {
     api.postTopic(this.state)
       .then(topic => {
         addNewTopic(topic);
+      })
+      .catch(({ response: { data: { message }, status } }) => {
+        this.setState({
+          error: { message, status }
+        })
       })
   }
 }

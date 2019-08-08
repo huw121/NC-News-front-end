@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import * as api from '../api';
 import { navigate } from '@reach/router';
+import ErrorComponent from './ErrorComponent';
 
 class SignUpPage extends Component {
   state = {
     username: '',
     name: '',
-    avatar_url: ''
+    avatar_url: '',
+    error: null
   }
   render() {
-    const { username, name, avatar_url } = this.state;
+    const { username, name, avatar_url, error } = this.state;
+    if (error) return <ErrorComponent error={error} />
     return (
       <form onSubmit={this.postUser}>
         <label>
@@ -37,10 +40,16 @@ class SignUpPage extends Component {
 
   postUser = (e) => {
     e.preventDefault();
-    api.postUser(this.state)
+    const { error, ...newUser } = this.state;
+    api.postUser(newUser)
       .then(({ username }) => {
         this.props.handleUserChange(username);
         navigate('/');
+      })
+      .catch(({ response: { data: { message }, status } }) => {
+        this.setState({
+          error: { message, status }
+        })
       })
   }
 }

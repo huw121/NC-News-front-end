@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
+import ErrorComponent from '../ErrorComponent';
 
 class ArticleForm extends Component {
   state = {
@@ -8,10 +9,12 @@ class ArticleForm extends Component {
     body: '',
     title: '',
     topic: null,
+    error: null
   }
   render() {
-    const { topics, body, title, isLoading } = this.state;
+    const { topics, body, title, isLoading, error } = this.state;
     if (isLoading) return <p>Loading...</p>
+    if (error) return <ErrorComponent error={error} />
     return (
       <form onSubmit={this.postArticle}>
         <label>
@@ -51,16 +54,26 @@ class ArticleForm extends Component {
     const { body, title, topic } = this.state;
     const { user: author, addNewArticle } = this.props;
     api.postArticle({ body, title, topic, author })
-      .then(({article}) => {
+      .then(article => {
         addNewArticle(article);
       })
-      .catch(err => { console.dir(err) })
+      .catch(({ response: { data: { message }, status } }) => {
+        this.setState({
+          error: { message, status },
+        })
+      })
   }
 
   fetchTopics = () => {
     api.getData('topics')
       .then(({ topics }) => {
         this.setState({ topics, isLoading: false });
+      })
+      .catch(({ response: { data: { message }, status } }) => {
+        this.setState({
+          error: { message, status },
+          isLoading: false
+        })
       })
   }
 }

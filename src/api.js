@@ -27,21 +27,30 @@ export const postComment = (article_id, username, body) => {
 
 export const postTopic = (topic) => {
   return request.post('/topics', topic)
-    .then(({data: {topic}}) => topic)
+    .then(({ data: { topic } }) => topic)
 }
 
 export const postUser = (user) => {
   return request.post('/users', user)
-    .then(({data: {user}}) => user)
+    .then(({ data: { user } }) => user)
 }
 
-export const postArticle = (article) => {
-  return request.post('/articles', article)
-    .then(({data: article}) => article)
+// export const postArticle = (article) => {
+//   return request.post('/articles', article)
+//     .then(({ data: { article } }) => article)
+// }
+
+export const postArticle = async (articleData) => {
+  const { data: { article } } = await request.post('/articles', articleData);
+  return article;
 }
 
-export const deleteComment = (id) => {
-  return request.delete(`/comments/${id}`)
+// export const deleteComment = (id) => {
+//   return request.delete(`/comments/${id}`)
+// }
+
+export const deleteComment = async id => {
+  return await request.delete(`/comments/${id}`);
 }
 
 export const deleteArticle = (id) => {

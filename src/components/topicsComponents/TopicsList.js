@@ -3,17 +3,20 @@ import * as api from '../../api'
 import TopicsCard from './TopicsCard';
 import { Link } from '@reach/router';
 import TopicForm from './TopicForm';
+import ErrorComponent from '../ErrorComponent';
 
 class TopicsList extends Component {
   state = {
     topics: null,
     isLoading: true,
-    showForm: false
+    showForm: false,
+    error: null
   }
 
   render() {
-    const { topics, isLoading, showForm } = this.state;
+    const { topics, isLoading, showForm, error } = this.state;
     if (isLoading) return <p>Loading...</p>
+    if (error) return <ErrorComponent error={error} />
     return (
       <section className="articles">
         <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post topic"} />
@@ -36,6 +39,7 @@ class TopicsList extends Component {
   }
 
   addNewTopic = (topic) => {
+    this.props.handleNewTopics();
     this.setState(({ topics }) => ({
       topics: [topic, ...topics],
       showForm: false
@@ -46,6 +50,12 @@ class TopicsList extends Component {
     api.getData('topics')
       .then(({ topics }) => {
         this.setState({ topics, isLoading: false });
+      })
+      .catch(({ response: { data: { message }, status } }) => {
+        this.setState({
+          error: { message, status },
+          isLoading: false
+        })
       })
   }
 }

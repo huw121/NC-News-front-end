@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
+import ErrorComponent from '../ErrorComponent';
 
 class CommentForm extends Component {
   state = {
-    body: ''
+    body: '',
+    error: null
   }
 
   render() {
+    const {error} = this.state;
+    if (error) return <ErrorComponent error={error} />
     return (
       <form onSubmit={this.handleCommentSubmit}>
         <textarea onChange={this.handleBodyChange} value={this.state.body} required></textarea>
@@ -25,6 +29,11 @@ class CommentForm extends Component {
     api.postComment(id, user, this.state.body)
       .then(comment => {
         addNewComment(comment);
+      })
+      .catch(({ response: { data: { message }, status } }) => {
+        this.setState({
+          error: { message, status }
+        })
       })
   }
 }

@@ -4,11 +4,13 @@ import CommentCard from './CommentCard';
 import Sorter from '../Sorter';
 import Paginator from '../Paginator';
 import CommentForm from './CommentForm';
+import ErrorComponent from '../ErrorComponent';
 
 class CommentsList extends Component {
   state = {
     comments: null,
     isLoading: true,
+    error: null,
     showForm: false,
     deletedComment: null,
     page: 1,
@@ -21,15 +23,17 @@ class CommentsList extends Component {
   }
 
   render() {
-    const { comments, isLoading, page, maxPage, showForm, deletedComment } = this.state;
+    const { comments, isLoading, page, maxPage, showForm, deletedComment, error } = this.state;
     const { article_id, user } = this.props;
+    if (error) return <ErrorComponent error={error} />
     return (
       <section>
         <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post comment"} />
         {showForm && <CommentForm addNewComment={this.addNewComment} id={article_id} user={user} />}
         <Sorter updateQueries={this.updateQueries} includeCommentCount={false} />
         <Paginator fetchMethod={this.fetchComments} p={page} pMax={maxPage} />
-        {deletedComment && <p>comment {deletedComment} successfully deleted!</p>}
+        {deletedComment === "success" && <p>comment successfully deleted!</p>}
+        {deletedComment === "failed" && <p>oops! something went wrong...</p>}
         {!isLoading && comments.map(comment => {
           return <CommentCard key={comment.comment_id} {...comment} user={user} commentDeletion={this.commentDeletion} />
         })}
@@ -73,16 +77,25 @@ class CommentsList extends Component {
   }
 
   commentDeletion = (id) => {
-    this.setState(({ comments }) => ({
-      comments: comments.filter(comment => comment.comment_id !== id),
-      deletedComment: id
-    }))
+    this.setState(({ comments }) => {
+      if (!id) return {deletedComment: "failed"}
+      return {
+        comments: comments.filter(comment => comment.comment_id !== id),
+        deletedComment: "success"
+      }
+    })
   }
 
   fetchComments = (p) => {
     api.getData(`articles/${this.props.article_id}/comments`, { ...this.state.queries, p })
       .then(({ comments, totalCount }) => {
         this.setState({ comments, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5), deletedComment: null });
+      })
+      .catch(({ response: { data: { message }, status } }) => {
+        this.setState({
+          error: { message, status },
+          isLoading: false
+        })
       })
   }
 }

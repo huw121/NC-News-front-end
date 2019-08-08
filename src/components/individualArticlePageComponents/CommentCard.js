@@ -4,10 +4,12 @@ import { Link } from '@reach/router';
 import * as api from '../../api';
 
 const CommentCard = ({ author, body, comment_id, created_at, votes, user, commentDeletion }) => {
-
   const handleDelete = () => {
     commentDeletion(comment_id);
-    api.deleteComment(comment_id);
+    api.deleteComment(comment_id)
+      .catch(() => {
+        commentDeletion(null)
+      })
   }
 
   return (

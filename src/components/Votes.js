@@ -6,9 +6,10 @@ class Votes extends Component {
     voteIncrement: 0
   }
   render() {
-    const { voteIncrement } = this.state;
+    const { voteIncrement, error } = this.state;
     return (
       <div>
+        {error && <p>oops! something went wrong...</p>}
         <button onClick={() => { this.changeVote(1) }} disabled={voteIncrement > 0}>upvote</button>
         <p>votes: {this.props.votes + this.state.voteIncrement}</p>
         <button onClick={() => { this.changeVote(-1) }} disabled={voteIncrement < 0}>downvote</button>
@@ -21,6 +22,12 @@ class Votes extends Component {
       voteIncrement: voteIncrement += val
     }));
     api.changeVote(this.props.target, this.props.id, val)
+      .catch(() => {
+        this.setState(({ voteIncrement }) => ({
+          voteIncrement: voteIncrement -= val,
+          error: true
+        }))
+      })
   }
 }
 
