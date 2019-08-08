@@ -25,6 +25,11 @@ export const postComment = (article_id, username, body) => {
     .then(({ data: { comment } }) => comment)
 }
 
+export const postTopic = (topic) => {
+  return request.post('/topics', topic)
+    .then(({data: {topic}}) => topic)
+}
+
 export const deleteComment = (id) => {
   return request.delete(`/comments/${id}`)
 }

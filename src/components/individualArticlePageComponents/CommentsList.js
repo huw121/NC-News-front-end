@@ -14,6 +14,7 @@ class CommentsList extends Component {
     page: 1,
     maxPage: 1,
     queries: {
+      limit: 5,
       order: 'desc',
       sort_by: 'votes'
     }
@@ -79,9 +80,9 @@ class CommentsList extends Component {
   }
 
   fetchComments = (p) => {
-    api.getData(`articles/${this.props.article_id}/comments`, { ...this.state.queries, })
+    api.getData(`articles/${this.props.article_id}/comments`, { ...this.state.queries, p })
       .then(({ comments, totalCount }) => {
-        this.setState({ comments, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 10), deletedComment: null });
+        this.setState({ comments, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5), deletedComment: null });
       })
   }
 }

@@ -20,7 +20,7 @@ class Header extends Component {
             <UserDropdown handleUserChange={handleUserChange} users={users} user={user}/>
         )
       }
-          <Link to={`/users/${user}/profile`}><button>see profile</button></Link>
+          <Link to={`/${user}/profile`}><button>see profile</button></Link>
       </header>
     );
   };

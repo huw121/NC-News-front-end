@@ -11,6 +11,7 @@ class ArticleList extends Component {
     articles: null,
     isLoading: true,
     queries: {
+      limit: 5,
       order: 'desc',
       sort_by: 'votes'
     }
@@ -18,10 +19,12 @@ class ArticleList extends Component {
 
   render() {
     const { isLoading, articles, page, maxPage } = this.state;
+    const {location: {state: locationState}} = this.props;
+    const articleDeleted = locationState ? locationState.articleDeleted : null;
     if (isLoading) return <p>Loading...</p>
     return (
       <section className="articles">
-      {this.props.location.state.articleDeleted && <p>article successfully deleted!</p>}
+      {articleDeleted && <p>article successfully deleted!</p>}
         <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
         <Paginator fetchMethod={this.fetchArticles} p={page} pMax={maxPage} />
         {articles.map(article => {
@@ -57,7 +60,7 @@ class ArticleList extends Component {
     const { topic, author } = this.props;
     api.getData('articles', { ...this.state.queries, p, topic, author })
       .then(({ articles, totalCount }) => {
-        this.setState({ articles, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 10) });
+        this.setState({ articles, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5) });
       })
   }
 }

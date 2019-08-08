@@ -1,16 +1,11 @@
 import React from 'react';
 
-const Paginator = ({fetchMethod, p, pMax}) => {
-  const handlePagination = ({ target: { name } }) => {
-    if (name === "up" && p + 1 <= pMax) fetchMethod(p + 1);
-    if (name === "down" && p - 1 >= 1) fetchMethod(p - 1);
-  }
-
+const Paginator = ({ fetchMethod, p, pMax }) => {
   return (
     <>
-      <button name="down" onClick={handlePagination}>&lt;</button>
+      <button disabled={p === 1} onClick={() => { fetchMethod(p - 1) }}>&lt; prev</button>
       <p>Page {p}</p>
-      <button name="up" onClick={handlePagination}>&gt;</button>
+      <button disabled={p + 1 > pMax} onClick={() => { fetchMethod(p + 1) }}>next &gt;</button>
     </>
   );
 }

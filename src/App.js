@@ -26,7 +26,7 @@ class App extends Component {
           <ArticleList path="/topics/:topic" />
           <ArticleList path="/users/:author" />
           <IndividualArticlePage path="/articles/:article_id" user={user} />
-          <UserProfile path="/users/:username/profile" />
+          <UserProfile path="/:username/profile" />
         </Router>
       </div>
     );
