@@ -3,6 +3,7 @@ import * as api from '../../api';
 import ArticleCard from './ArticleCard';
 import Sorter from '../Sorter';
 import Paginator from '../Paginator';
+import ArticleForm from './ArticleForm';
 
 class ArticleList extends Component {
   state = {
@@ -10,6 +11,7 @@ class ArticleList extends Component {
     maxPage: 1,
     articles: null,
     isLoading: true,
+    showForm: false,
     queries: {
       limit: 5,
       order: 'desc',
@@ -18,18 +20,26 @@ class ArticleList extends Component {
   }
 
   render() {
-    const { isLoading, articles, page, maxPage } = this.state;
-    const {location: {state: locationState}} = this.props;
+    const { isLoading, articles, page, maxPage, showForm } = this.state;
+    const { location: { state: locationState }, user } = this.props;
     const articleDeleted = locationState ? locationState.articleDeleted : null;
     if (isLoading) return <p>Loading...</p>
     return (
       <section className="articles">
-      {articleDeleted && <p>article successfully deleted!</p>}
-        <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
-        <Paginator fetchMethod={this.fetchArticles} p={page} pMax={maxPage} />
-        {articles.map(article => {
-          return <ArticleCard key={article.article_id} {...article} path={this.props.uri} />
-        })}
+        {articleDeleted && <p>article successfully deleted!</p>}
+        <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post article"} />
+        {showForm
+          ? <ArticleForm user={user} addNewArticle={this.addNewArticle} />
+          : (
+            <>
+              <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
+              <Paginator fetchMethod={this.fetchArticles} p={page} pMax={maxPage} />
+              {articles.map(article => {
+                return <ArticleCard key={article.article_id} {...article} path={this.props.uri} />
+              })}
+            </>
+          )
+        }
       </section>
     );
   }
@@ -43,8 +53,23 @@ class ArticleList extends Component {
     for (let prop in queries) {
       if (this.state.queries[prop] !== queries[prop]) check = true;
     }
-    if (this.props.topic !== prevProps.topic || this.props.author !== prevProps.author) check = true;
+    const { location: { state: locationState }, topic, author } = this.props;
+    if (topic !== prevProps.topic || author !== prevProps.author) check = true;
     if (check) this.fetchArticles(1)
+    if (locationState) this.articleDeletion(locationState.articleDeleted);
+  }
+
+  toggleForm = () => {
+    this.setState(currentState => ({
+      showForm: !currentState.showForm
+    }))
+  }
+
+  addNewArticle = (article) => {
+    this.setState(({ articles }) => ({
+      articles: [article, ...articles],
+      showForm: false
+    }))
   }
 
   updateQueries = ({ target: { value, name } }) => {
@@ -54,6 +79,14 @@ class ArticleList extends Component {
         [name]: value
       }
     }))
+  }
+
+  articleDeletion = (id) => {
+    if (this.state.articles.some(({ article_id }) => article_id === +id)) {
+      this.setState(({ articles }) => ({
+        articles: articles.filter(article => article.article_id !== +id),
+      }))
+    }
   }
 
   fetchArticles = (p) => {

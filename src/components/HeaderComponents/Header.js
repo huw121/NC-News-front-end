@@ -21,12 +21,19 @@ class Header extends Component {
         )
       }
           <Link to={`/${user}/profile`}><button>see profile</button></Link>
+          <Link to='/signup'><button>sign up</button></Link>
       </header>
     );
   };
 
   componentDidMount() {
     this.fetchUsers();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.user !== this.props.user) {
+      this.fetchUsers();
+    }
   }
 
   fetchUsers = () => {

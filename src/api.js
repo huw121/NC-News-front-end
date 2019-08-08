@@ -30,6 +30,16 @@ export const postTopic = (topic) => {
     .then(({data: {topic}}) => topic)
 }
 
+export const postUser = (user) => {
+  return request.post('/users', user)
+    .then(({data: {user}}) => user)
+}
+
+export const postArticle = (article) => {
+  return request.post('/articles', article)
+    .then(({data: article}) => article)
+}
+
 export const deleteComment = (id) => {
   return request.delete(`/comments/${id}`)
 }

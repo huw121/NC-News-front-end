@@ -7,6 +7,7 @@ import { Router } from '@reach/router';
 import TopicsList from './components/topicsComponents/TopicsList';
 import IndividualArticlePage from './components/individualArticlePageComponents/IndividualArticlePage';
 import UserProfile from './components/UserProfile';
+import SignUpPage from './components/SignUpPage';
 
 class App extends Component {
   state = {
@@ -20,19 +21,20 @@ class App extends Component {
         <Header handleUserChange={this.handleUserChange} user={user} />
         <Sidebar />
         <Router>
-          <ArticleList path="/" />
-          <ArticleList path="/articles" />
+          <ArticleList path="/" user={user}/>
+          <ArticleList path="/articles" user={user}/>
+          <ArticleList path="/topics/:topic" user={user}/>
+          <ArticleList path="/users/:author" user={user}/>
           <TopicsList path="/topics" />
-          <ArticleList path="/topics/:topic" />
-          <ArticleList path="/users/:author" />
           <IndividualArticlePage path="/articles/:article_id" user={user} />
           <UserProfile path="/:username/profile" />
+          <SignUpPage path="/signup" handleUserChange={this.handleUserChange}/>
         </Router>
       </div>
     );
   }
 
-  handleUserChange = ({ target: { value: user } }) => {
+  handleUserChange = (user) => {
     this.setState({ user });
   }
 }

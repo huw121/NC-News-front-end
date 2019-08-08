@@ -43,8 +43,9 @@ class IndividualArticlePage extends Component {
   }
 
   handleArticleDelete = () => {
-    api.deleteArticle(this.props.article_id).catch(err => {console.dir(err)});
-    navigate(this.props.location.state.prevPath, {state: {articleDeleted: true}});
+    const { article_id, location: { state: { prevPath } } } = this.props;
+    api.deleteArticle(article_id).catch(err => { console.dir(err) });
+    navigate(prevPath, { state: { articleDeleted: article_id } });
   }
 
   fetchArticle() {
