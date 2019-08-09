@@ -4,6 +4,7 @@ import { Link, navigate } from '@reach/router';
 import Votes from '../Votes';
 import CommentsList from './CommentsList';
 import ErrorComponent from '../ErrorComponent';
+import styles from './IndividualArticlePage.module.css';
 
 class IndividualArticlePage extends Component {
   state = {
@@ -21,16 +22,20 @@ class IndividualArticlePage extends Component {
     const { author, body, comment_count, created_at, title, topic, votes, article_id } = article;
     const { user } = this.props;
     return (
-      <article className="articles">
-        <Votes votes={votes} id={article_id} target="articles" />
+      <article className={`articles ${styles.article}`}>
+        <div className={styles.IndividualArticlePageTop}>
+          <Votes votes={votes} id={article_id} target="articles" />
+          <h1>{title}</h1>
+        </div>
+        <div className={styles.content}>
         <Link to={`/topics/${topic}`}><p>{topic}</p></Link>
-        <h1>{title}</h1>
         <p>Created at: {created_at}</p>
         <Link to={`/users/${author}`}><p>created by: {author}</p></Link>
-        <p>{body}</p>
+        <p className={styles.body}>{body}</p>
         <p>comments: {comment_count}</p>
+        </div>
+        <input className={styles.button} type="button" onClick={this.toggleComments} value={showComments ? "hide comments" : "show comments"} />
         {user === author && <button disabled={disableDelete} onClick={this.handleArticleDelete}>delete article</button>}
-        <input type="button" onClick={this.toggleComments} value={showComments ? "hide comments" : "show comments"} />
         {showComments && <CommentsList article_id={article_id} user={user} />}
       </article>
     );

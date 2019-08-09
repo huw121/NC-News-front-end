@@ -1,0 +1,33 @@
+.IndividualArticlePageTop {
+  display: flex;
+  align-items: center;
+}
+
+.article {
+  margin: 10px;
+}
+
+.content {
+  margin: 10px 30px;
+  display: flex;
+  flex-direction: column;
+}
+
+.body {
+  padding: 20px 0px;
+  line-height: 1.2em;
+  font-size: 1.4em;
+}
+
+.button {
+  margin: 10px 30px;
+  font-size: 1em;
+  padding: 5px;
+  color: var(--main-navy);
+}
+
+.button:hover {
+  color: var(--main-orange);
+  cursor: pointer;
+}
+

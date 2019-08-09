@@ -4,7 +4,7 @@ import styles from './Sorter.module.css';
 const Sorter = ({updateQueries, includeCommentCount}) => {
   return (
     <div className={styles.sorter}>
-      <label for="sort_by">
+      <label htmlFor="sort_by">
         Sort by:
       </label>
         <select name="sort_by" onChange={updateQueries}>
@@ -12,7 +12,7 @@ const Sorter = ({updateQueries, includeCommentCount}) => {
           <option value="created_at">Created at</option>
           {includeCommentCount && <option value="comment_count">Comment Count</option>}
         </select>
-      <label for="order">
+      <label htmlFor="order">
         Order:
       </label>
         <select name="order" onChange={updateQueries}>
