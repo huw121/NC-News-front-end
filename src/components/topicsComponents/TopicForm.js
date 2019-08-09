@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
 import ErrorComponent from '../ErrorComponent';
+import styles from './topicForm.module.css';
 
 class TopicForm extends Component {
   state = {
@@ -13,15 +14,15 @@ class TopicForm extends Component {
     const { slug, description, error } = this.state;
     if (error) return <ErrorComponent error={error} />
     return (
-      <form onSubmit={this.handleTopicSubmit}>
-        <label>
+      <form onSubmit={this.handleTopicSubmit} className={styles.topicForm}>
+        <label htmlFor="slug">
           enter topic title:
-          <input name="slug" onChange={this.handleFormChange} value={slug} required></input>
         </label>
-        <label>
+        <input name="slug" onChange={this.handleFormChange} value={slug} required></input>
+        <label htmlFor="description">
           enter topic description:
-          <textarea name="description" onChange={this.handleFormChange} value={description} required></textarea>
         </label>
+        <textarea name="description" onChange={this.handleFormChange} value={description} required></textarea>
         <button type="submit">submit topic</button>
       </form>
     );

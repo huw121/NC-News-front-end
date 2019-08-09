@@ -4,6 +4,7 @@ import TopicsCard from './TopicsCard';
 import { Link } from '@reach/router';
 import TopicForm from './TopicForm';
 import ErrorComponent from '../ErrorComponent';
+import styles from './TopicList.module.css';
 
 class TopicsList extends Component {
   state = {
@@ -18,7 +19,7 @@ class TopicsList extends Component {
     if (isLoading) return <p>Loading...</p>
     if (error) return <ErrorComponent error={error} />
     return (
-      <section className="articles">
+      <section className={`articles ${styles.topicList}`}>
         <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post topic"} />
         {showForm && <TopicForm addNewTopic={this.addNewTopic} />}
         {topics.map(topic => {

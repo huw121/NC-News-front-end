@@ -37,10 +37,10 @@ class ArticleList extends Component {
           : (
             <>
               <div>
-              <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
+                <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
               </div>
               <div>
-              <Paginator fetchMethod={this.fetchArticles} p={page} pMax={maxPage} />
+                <Paginator fetchMethod={this.fetchArticles} p={page} pMax={maxPage} />
               </div>
               {articles.map(article => {
                 return <ArticleCard key={article.article_id} {...article} path={this.props.uri} />
@@ -65,6 +65,7 @@ class ArticleList extends Component {
     if (topic !== prevProps.topic || author !== prevProps.author) check = true;
     if (check) this.fetchArticles(1)
     if (locationState) this.articleDeletion(locationState.articleDeleted);
+    
   }
 
   toggleForm = () => {
@@ -101,7 +102,7 @@ class ArticleList extends Component {
     const { topic, author } = this.props;
     api.getData('articles', { ...this.state.queries, p, topic, author })
       .then(({ articles, totalCount }) => {
-        this.setState({ articles, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5) });
+        this.setState({ articles, showForm: false, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5) });
       })
       .catch(({ response: { data: { message }, status } }) => {
         this.setState({

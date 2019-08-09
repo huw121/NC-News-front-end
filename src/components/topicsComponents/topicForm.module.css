@@ -1,0 +1,12 @@
+.topicForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.topicForm textarea {
+  height: 10vh;
+}
+
+.topicForm * {
+  margin: 10px 20px;
+}

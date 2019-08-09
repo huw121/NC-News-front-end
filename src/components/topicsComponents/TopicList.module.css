@@ -1,0 +1,17 @@
+.topicList {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+.topicList input {
+  margin: 10px 20px;
+  font-size: 1em;
+  padding: 5px;
+  color: var(--main-navy);
+}
+
+.topicList input:hover {
+  color: var(--main-orange);
+  cursor: pointer;
+}
