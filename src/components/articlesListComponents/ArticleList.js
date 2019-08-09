@@ -31,7 +31,7 @@ class ArticleList extends Component {
     return (
       <section className={`articles ${styles.articleList}`}>
         {articleDeleted && <p>article successfully deleted!</p>}
-        <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post article"} />
+        <input className={styles.postButton} type="button" onClick={this.toggleForm} value={showForm ? "Hide Form" : "Post Article"} />
         {showForm
           ? <ArticleForm user={user} addNewArticle={this.addNewArticle} />
           : (

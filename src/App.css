@@ -11,10 +11,6 @@
   text-decoration: none;
 }
 
-linkStyle {
-  text-decoration: none;
-}
-
 .App {
   display: grid;
   grid-template-rows: 18vh 1fr;
