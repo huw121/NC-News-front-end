@@ -5,6 +5,7 @@ import Sorter from '../Sorter';
 import Paginator from '../Paginator';
 import CommentForm from './CommentForm';
 import ErrorComponent from '../ErrorComponent';
+import styles from '../articlesListComponents/ArticleList.module.css';
 
 class CommentsList extends Component {
   state = {
@@ -27,8 +28,8 @@ class CommentsList extends Component {
     const { article_id, user } = this.props;
     if (error) return <ErrorComponent error={error} />
     return (
-      <section>
-        <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post comment"} />
+      <section className={`articles ${styles.articleList}`}>
+        <input type="button" onClick={this.toggleForm} value={showForm ? "Hide Form" : "Post Comment"} className={styles.postButton} />
         {showForm && <CommentForm addNewComment={this.addNewComment} id={article_id} user={user} />}
         <Sorter updateQueries={this.updateQueries} includeCommentCount={false} />
         <Paginator fetchMethod={this.fetchComments} p={page} pMax={maxPage} />

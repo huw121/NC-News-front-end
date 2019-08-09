@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
 import ErrorComponent from '../ErrorComponent';
+import styles from './ArticleForm.module.css';
 
 class ArticleForm extends Component {
   state = {
@@ -16,24 +17,24 @@ class ArticleForm extends Component {
     if (isLoading) return <p>Loading...</p>
     if (error) return <ErrorComponent error={error} />
     return (
-      <form onSubmit={this.postArticle}>
-        <label>
-          enter title:
-          <input name="title" value={title} onChange={this.handleFormChange} required />
-        </label>
-        <label>
-          enter body:
-          <textarea name="body" onChange={this.handleFormChange} value={body} required></textarea>
-        </label>
-        <label>
+      <form onSubmit={this.postArticle} className={styles.articleForm}>
+        <label htmlFor="topic">
           choose a topic:
-          <select name="topic" onChange={this.handleFormChange} defaultValue=" -- select a topic -- ">
-            <option disabled value=" -- select a topic -- "> -- select a topic -- </option>
-            {topics.map(({ slug }) => (
-              <option key={slug} >{slug}</option>
-            ))}
-          </select>
         </label>
+        <select name="topic" onChange={this.handleFormChange} defaultValue=" -- select a topic -- ">
+          <option disabled value=" -- select a topic -- "> -- select a topic -- </option>
+          {topics.map(({ slug }) => (
+            <option key={slug} >{slug}</option>
+          ))}
+        </select>
+        <label htmlFor="title">
+        enter title:
+        </label>
+          <input name="title" value={title} onChange={this.handleFormChange} required />
+        <label htmlFor="body">
+        enter body:
+        </label>
+          <textarea name="body" onChange={this.handleFormChange} value={body} required></textarea>
         <button type="submit">post article</button>
       </form>
     );

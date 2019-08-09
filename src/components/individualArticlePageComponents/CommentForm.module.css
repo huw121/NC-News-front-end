@@ -1,0 +1,13 @@
+.commentForm {
+  display: flex;
+  flex-direction: column;
+}
+
+.commentForm textarea {
+  height: 10vh;
+  margin: 10px 20px;
+}
+
+.commentForm button {
+  margin: 10px 20px;
+}

@@ -1,0 +1,13 @@
+.articleForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.articleForm * {
+  margin: 10px 20px;
+}
+
+.articleForm textarea {
+  height: 30vh;
+}

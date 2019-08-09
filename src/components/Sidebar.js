@@ -17,7 +17,7 @@ class Sidebar extends Component {
     if (error) return <ErrorComponent error={error} />
     return (
       <nav className="sidebar">
-        <Link to="/topics"><button className={styles.sidebar}>All Topics</button></Link>
+        <Link to="/topics"><button className={styles.sidebar}>All</button></Link>
         {topics.map(topic => {
           return <li key={topic.slug}><Link to={`topics/${topic.slug}`}><p className={styles.sidebar}>{topic.slug}</p></Link></li>
         })}

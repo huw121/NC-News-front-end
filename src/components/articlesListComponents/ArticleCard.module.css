@@ -16,3 +16,12 @@
   flex-direction: column;
   justify-content: space-around;
 }
+
+.deleteButton {
+  width: 10em;
+  margin: 0px;
+}
+
+.body {
+  font-size: 1.25em;
+}

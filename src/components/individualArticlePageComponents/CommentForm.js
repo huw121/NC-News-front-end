@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import * as api from '../../api';
 import ErrorComponent from '../ErrorComponent';
+import styles from './CommentForm.module.css';
+
 
 class CommentForm extends Component {
   state = {
@@ -12,7 +14,7 @@ class CommentForm extends Component {
     const {error} = this.state;
     if (error) return <ErrorComponent error={error} />
     return (
-      <form onSubmit={this.handleCommentSubmit}>
+      <form onSubmit={this.handleCommentSubmit} className={styles.commentForm}>
         <textarea onChange={this.handleBodyChange} value={this.state.body} required></textarea>
         <button type="submit">submit comment</button>
       </form>
