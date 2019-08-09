@@ -45,12 +45,8 @@ export const postArticle = async (articleData) => {
   return article;
 }
 
-// export const deleteComment = (id) => {
-//   return request.delete(`/comments/${id}`)
-// }
-
-export const deleteComment = async id => {
-  return await request.delete(`/comments/${id}`);
+export const deleteComment = (id) => {
+  return request.delete(`/comments/${id}`)
 }
 
 export const deleteArticle = (id) => {

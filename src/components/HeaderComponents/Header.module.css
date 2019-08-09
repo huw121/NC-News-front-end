@@ -1,0 +1,31 @@
+header {
+  display: grid;
+  grid-template: 1fr / 2fr 1fr;
+  grid-template-areas: "header users";
+  margin: 10px;
+}
+
+.title {
+  grid-area: header;
+  font-size: 6.5em;
+  display: inline-block;
+  color: var(--main-navy);
+}
+
+.title:hover {
+  cursor: pointer;
+  color: var(--main-orange);
+}
+
+.userArea {
+  grid-area: users;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.userItems {
+  font-size: 1em;
+  margin: 2px;
+}
+

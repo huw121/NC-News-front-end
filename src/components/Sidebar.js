@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as api from '../api';
 import { Link } from '@reach/router';
 import ErrorComponent from './ErrorComponent';
+import styles from './Sidebar.module.css';
 
 class Sidebar extends Component {
   state = {
@@ -16,10 +17,10 @@ class Sidebar extends Component {
     if (error) return <ErrorComponent error={error} />
     return (
       <nav className="sidebar">
+        <Link to="/topics"><button className={styles.sidebar}>See all topics</button></Link>
         {topics.map(topic => {
-          return <li key={topic.slug}><Link to={`topics/${topic.slug}`}>{topic.slug}</Link></li>
+          return <li key={topic.slug}><Link to={`topics/${topic.slug}`}><p className={styles.sidebar}>{topic.slug}</p></Link></li>
         })}
-        <Link to="/topics"><button>See all topics</button></Link>
       </nav>
     );
   }

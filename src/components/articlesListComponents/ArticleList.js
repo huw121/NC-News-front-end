@@ -5,6 +5,7 @@ import Sorter from '../Sorter';
 import Paginator from '../Paginator';
 import ArticleForm from './ArticleForm';
 import ErrorComponent from '../ErrorComponent';
+import styles from './ArticleList.module.css';
 
 class ArticleList extends Component {
   state = {
@@ -28,15 +29,19 @@ class ArticleList extends Component {
     if (isLoading) return <p>Loading...</p>
     if (error) return <ErrorComponent error={error} />
     return (
-      <section className="articles">
+      <section className={`articles ${styles.articleList}`}>
         {articleDeleted && <p>article successfully deleted!</p>}
         <input type="button" onClick={this.toggleForm} value={showForm ? "hide form" : "post article"} />
         {showForm
           ? <ArticleForm user={user} addNewArticle={this.addNewArticle} />
           : (
             <>
+              <div>
               <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
+              </div>
+              <div>
               <Paginator fetchMethod={this.fetchArticles} p={page} pMax={maxPage} />
+              </div>
               {articles.map(article => {
                 return <ArticleCard key={article.article_id} {...article} path={this.props.uri} />
               })}

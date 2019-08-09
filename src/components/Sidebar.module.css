@@ -1,0 +1,19 @@
+nav {
+  margin: 10px;
+}
+
+li {
+  padding: 5px 30px;
+  display: block;
+  list-style: none;
+}
+
+.sidebar {
+  color: var(--main-navy);
+  font-size: 1em;
+}
+
+.sidebar:hover {
+  color: var(--main-orange);
+  cursor: pointer;
+}

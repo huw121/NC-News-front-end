@@ -3,6 +3,7 @@ import { Link } from '@reach/router';
 import * as api from '../../api';
 import UserDropdown from './UserDropdown';
 import ErrorComponent from '../ErrorComponent';
+import styles from './Header.module.css';
 
 class Header extends Component {
   state = {
@@ -16,15 +17,17 @@ class Header extends Component {
     if (error) return <ErrorComponent error={error} />
     return (
       <header className="header">
-        <Link to="/"><h1>NC News</h1></Link>
+        <Link to="/"><h1 className={styles.title}>NC News</h1></Link>
+        <div className={styles.userArea}>
         {isLoading
           ? <p>Loading...</p>
           : (
             <UserDropdown handleUserChange={handleUserChange} users={users} user={user} />
             )
         }
-        <Link to={`/${user}/profile`}><button>see profile</button></Link>
-        <Link to='/signup'><button>sign up</button></Link>
+        <Link to={`/${user}/profile`}><button className={styles.userItems}>My Profile</button></Link>
+        <Link to='/signup'><button className={styles.userItems}>Sign Up</button></Link>
+        </div>
       </header>
     );
   };
