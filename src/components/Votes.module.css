@@ -1,0 +1,9 @@
+.voter {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.voter p {
+  margin: 10px 30px;
+}

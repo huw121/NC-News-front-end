@@ -1,0 +1,18 @@
+.articleCard {
+  display: flex;
+}
+
+.articleCardLinks {
+  color: var(--main-navy);
+}
+
+.articleCardLinks:hover {
+  color: var(--main-orange);
+  cursor: pointer;
+}
+
+.articleCardContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}

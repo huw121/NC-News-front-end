@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import * as api from '../api'
+import styles from './Votes.module.css';
 
 class Votes extends Component {
   state = {
@@ -8,7 +9,7 @@ class Votes extends Component {
   render() {
     const { voteIncrement, error } = this.state;
     return (
-      <div>
+      <div className={styles.voter}>
         {error && <p>oops! something went wrong...</p>}
         <button onClick={() => { this.changeVote(1) }} disabled={voteIncrement > 0}>upvote</button>
         <p>votes: {this.props.votes + this.state.voteIncrement}</p>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from '@reach/router';
 import Votes from '../Votes';
+import styles from './ArticleCard.module.css';
 
 class ArticleCard extends Component {
   state = {
@@ -9,13 +10,13 @@ class ArticleCard extends Component {
   render() {
     const { article_id, author, comment_count, created_at, title, topic, votes, path } = this.props
     return (
-      <article className="article-card">
+      <article className={`article-card ${styles.articleCard}`}>
           <Votes votes={votes} id={article_id} target="articles"/>
-        <div>
-          <Link to={`/topics/${topic}`}><p>{topic}</p></Link>
+        <div className={styles.articleCardContent}>
+          <Link to={`/topics/${topic}`}><p className={styles.articleCardLinks}>{topic}</p></Link>
           <p>created: {created_at}</p>
-          <Link to={`/articles/${article_id}`} state={{ prevPath: path }}><h2>{title}</h2></Link>
-          <Link to={`/users/${author}`}><p>created by: {author}</p></Link>
+          <Link to={`/articles/${article_id}`} state={{ prevPath: path }}><h2 className={styles.articleCardLinks}>{title}</h2></Link>
+          <Link to={`/users/${author}`}><p className={styles.articleCardLinks}>created by: {author}</p></Link>
           <p>comments: {comment_count}</p>
         </div>
       </article >
