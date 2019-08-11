@@ -71,6 +71,7 @@ class CommentsList extends Component {
   }
 
   addNewComment = (comment) => {
+    this.props.updateCommentCount(1);
     this.setState(({ comments }) => ({
       comments: [comment, ...comments],
       showForm: false
@@ -78,6 +79,7 @@ class CommentsList extends Component {
   }
 
   commentDeletion = (id) => {
+    if (id) this.props.updateCommentCount(-1);
     this.setState(({ comments }) => {
       if (!id) return {deletedComment: "failed"}
       return {

@@ -36,7 +36,7 @@ class IndividualArticlePage extends Component {
         </div>
         <input className={styles.button} type="button" onClick={this.toggleComments} value={showComments ? "hide comments" : "show comments"} />
         {user === author && <button disabled={disableDelete} onClick={this.handleArticleDelete}>delete article</button>}
-        {showComments && <CommentsList article_id={article_id} user={user} />}
+        {showComments && <CommentsList article_id={article_id} user={user} updateCommentCount={this.updateCommentCount}/>}
       </article>
     );
   }
@@ -48,6 +48,12 @@ class IndividualArticlePage extends Component {
   toggleComments = () => {
     this.setState(({ showComments }) => ({
       showComments: !showComments
+    }))
+  }
+
+  updateCommentCount = (val) => {
+    this.setState(({article: {comment_count, ...restOfArticle}}) => ({
+      article: {comment_count: +comment_count + val, ...restOfArticle}
     }))
   }
 

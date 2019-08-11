@@ -40,7 +40,7 @@ class SignUpPage extends Component {
 
   postUser = (e) => {
     e.preventDefault();
-    const { error, ...newUser } = this.state;
+    const {error, ...newUser } = this.state;
     api.postUser(newUser)
       .then(({ username }) => {
         this.props.handleUserChange(username);

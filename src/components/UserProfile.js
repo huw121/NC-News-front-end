@@ -29,12 +29,13 @@ class UserProfile extends Component {
     this.fetchUser();
   }
 
-  componentDidUpdate({ username }) {
-    if (username !== this.props.username) this.fetchUser();
+  componentDidUpdate({ user }) {
+    if (user !== this.props.user) this.fetchUser();
+    
   }
 
   fetchUser = () => {
-    api.getData(`users/${this.props.username}`)
+    api.getData(`users/${this.props.user  }`)
       .then(({ user }) => {
         this.setState({ user, isLoading: false });
       })

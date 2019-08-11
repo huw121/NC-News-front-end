@@ -24,7 +24,7 @@ class ArticleList extends Component {
 
   render() {
     const { isLoading, articles, page, maxPage, showForm, error } = this.state;
-    const { location: { state: locationState }, user } = this.props;
+    const { location: { state: locationState }, user, topics } = this.props;
     const articleDeleted = locationState ? locationState.articleDeleted : null;
     if (isLoading) return <p>Loading...</p>
     if (error) return <ErrorComponent error={error} />
@@ -33,7 +33,7 @@ class ArticleList extends Component {
         {articleDeleted && <p>article successfully deleted!</p>}
         <input className={styles.postButton} type="button" onClick={this.toggleForm} value={showForm ? "Hide Form" : "Post Article"} />
         {showForm
-          ? <ArticleForm user={user} addNewArticle={this.addNewArticle} />
+          ? <ArticleForm user={user} topics={topics} addNewArticle={this.addNewArticle} />
           : (
             <>
               <div>
