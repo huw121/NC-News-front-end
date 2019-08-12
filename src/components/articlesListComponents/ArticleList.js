@@ -31,7 +31,7 @@ class ArticleList extends Component {
     return (
       <main className={`articles ${styles.articleList}`}>
         {articleDeleted && <p>article successfully deleted!</p>}
-        <input className={styles.postButton} type="button" onClick={this.toggleForm} value={showForm ? "Hide Form" : "Post Article"} />
+        <input className={styles.postButton} type="button" onClick={this.toggleForm} value={showForm ? "Hide Form" : "New Article"} />
         {showForm
           ? <ArticleForm user={user} topics={topics} addNewArticle={this.addNewArticle} />
           : (
@@ -105,7 +105,7 @@ class ArticleList extends Component {
       const { topic, author } = this.props;
       api.getData('articles', { ...this.state.queries, p, topic, author })
         .then(({ articles, totalCount }) => {
-          this.setState({ articles, showForm: false, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5) });
+          this.setState({ articles, showForm: false, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5), error: null });
         })
         .catch(({ response: { data: { message }, status } }) => {
           this.setState({

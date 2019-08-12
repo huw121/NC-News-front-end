@@ -30,7 +30,7 @@ class CommentsList extends Component {
     if (error) return <ErrorComponent error={error} />
     return (
       <section className={`articles ${styles.articleList}`}>
-        <input type="button" onClick={this.toggleForm} value={showForm ? "Hide Form" : "Post Comment"} className={styles.postButton} />
+        <input type="button" onClick={this.toggleForm} value={showForm ? "Hide Form" : "New Comment"} className={styles.postButton} />
         {showForm && <CommentForm addNewComment={this.addNewComment} id={article_id} user={user} />}
         <Sorter updateQueries={this.updateQueries} includeCommentCount={false} />
         <Paginator fetchMethod={this.fetchComments} p={page} pMax={maxPage} />

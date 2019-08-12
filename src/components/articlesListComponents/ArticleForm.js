@@ -35,7 +35,7 @@ class ArticleForm extends Component {
           enter body:
         </label>
         <textarea name="body" onChange={this.handleFormChange} value={body} required></textarea>
-        {isLoading ? <LoaderSpinner /> : <button type="submit">post article</button>}
+        {isLoading ? <LoaderSpinner /> : <button type="submit">Post Article</button>}
       </form>
     );
   }

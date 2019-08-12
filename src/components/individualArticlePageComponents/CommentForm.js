@@ -18,7 +18,7 @@ class CommentForm extends Component {
     return (
       <form onSubmit={this.handleCommentSubmit} className={styles.commentForm}>
         <textarea onChange={this.handleBodyChange} value={this.state.body} required></textarea>
-        {isLoading ? <LoaderSpinner /> : <button type="submit">submit comment</button>}
+        {isLoading ? <LoaderSpinner /> : <button type="submit">Post Comment</button>}
       </form>
     );
   }
