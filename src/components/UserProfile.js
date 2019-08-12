@@ -3,6 +3,7 @@ import * as api from '../api';
 import { Link } from '@reach/router'
 import ErrorComponent from './ErrorComponent';
 import styles from './UserProfile.module.css';
+import LoaderSpinner from './Loader';
 
 class UserProfile extends Component {
   state = {
@@ -13,7 +14,7 @@ class UserProfile extends Component {
 
   render() {
     const { user, isLoading, error } = this.state;
-    if (isLoading) return <p>Loading...</p>
+    if (isLoading) return <LoaderSpinner />
     if (error) return <ErrorComponent error={error} />
     const { username, name, avatar_url } = user;
     return (

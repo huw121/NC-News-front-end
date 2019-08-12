@@ -5,6 +5,7 @@ import Votes from '../Votes';
 import CommentsList from './CommentsList';
 import ErrorComponent from '../ErrorComponent';
 import styles from './IndividualArticlePage.module.css';
+import LoaderSpinner from '../Loader';
 
 class IndividualArticlePage extends Component {
   state = {
@@ -17,7 +18,7 @@ class IndividualArticlePage extends Component {
 
   render() {
     const { isLoading, article, showComments, error, disableDelete } = this.state;
-    if (isLoading) return <p>Loading...</p>
+    if (isLoading) return <LoaderSpinner />
     if (error) return <ErrorComponent error={error} />
     const { author, body, comment_count, created_at, title, topic, votes, article_id } = article;
     const { user } = this.props;

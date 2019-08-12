@@ -10,6 +10,8 @@ import UserProfile from './components/UserProfile';
 import SignUpPage from './components/SignUpPage';
 import ErrorComponent from './components/ErrorComponent';
 import * as api from './api';
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css"
+import LoaderSpinner from './components/Loader';
 
 class App extends Component {
   state = {
@@ -22,7 +24,7 @@ class App extends Component {
   render() {
     const { user, topics, error, isLoading } = this.state;
     if (error) return <ErrorComponent error={error} />
-    if (isLoading) return <p>Loading...</p>
+    if (isLoading) return <LoaderSpinner />
     return (
       <div className="App">
         <Header handleUserChange={this.handleUserChange} user={user} />

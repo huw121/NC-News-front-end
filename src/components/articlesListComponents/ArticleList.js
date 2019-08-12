@@ -6,6 +6,7 @@ import Paginator from '../Paginator';
 import ArticleForm from './ArticleForm';
 import ErrorComponent from '../ErrorComponent';
 import styles from './ArticleList.module.css';
+import LoaderSpinner from '../Loader';
 
 class ArticleList extends Component {
   state = {
@@ -26,10 +27,10 @@ class ArticleList extends Component {
     const { isLoading, articles, page, maxPage, showForm, error } = this.state;
     const { location: { state: locationState }, user, topics } = this.props;
     const articleDeleted = locationState ? locationState.articleDeleted : null;
-    if (isLoading) return <p>Loading...</p>
+    if (isLoading) return <LoaderSpinner />
     if (error) return <ErrorComponent error={error} />
     return (
-      <section className={`articles ${styles.articleList}`}>
+      <main className={`articles ${styles.articleList}`}>
         {articleDeleted && <p>article successfully deleted!</p>}
         <input className={styles.postButton} type="button" onClick={this.toggleForm} value={showForm ? "Hide Form" : "Post Article"} />
         {showForm
@@ -48,7 +49,7 @@ class ArticleList extends Component {
             </>
           )
         }
-      </section>
+      </main>
     );
   }
 

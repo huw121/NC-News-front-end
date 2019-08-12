@@ -4,6 +4,7 @@ import * as api from '../../api';
 import UserDropdown from './UserDropdown';
 import ErrorComponent from '../ErrorComponent';
 import styles from './Header.module.css';
+import LoaderSpinner from '../Loader';
 
 class Header extends Component {
   state = {
@@ -20,7 +21,7 @@ class Header extends Component {
         <Link to="/"><h1 className={styles.title}>NC News</h1></Link>
         <div className={styles.userArea}>
         {isLoading
-          ? <p>Loading...</p>
+          ? <LoaderSpinner />
           : (
             <UserDropdown handleUserChange={handleUserChange} users={users} user={user} />
             )

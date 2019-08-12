@@ -15,6 +15,7 @@ The following dependencies are required to run the project:
   * [react ^16.8.6](https://reactjs.org/)
   * [react-dom ^16.8.6](https://reactjs.org/)
   * [react-scripts ^3.0.1](https://reactjs.org/)
+  * [react-loader-spinner ^3.1.2](https://github.com/mhnpd/react-loader-spinner)
 
 To install, please run:
 
