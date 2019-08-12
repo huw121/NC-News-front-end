@@ -1,0 +1,16 @@
+.userProfile {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 10px;
+}
+
+.userProfile h2 {
+  margin: 10px 30px;
+}
+
+.userProfile img {
+  margin: 10px 30px;
+  height: 200px;
+  width: 200px;
+}
+

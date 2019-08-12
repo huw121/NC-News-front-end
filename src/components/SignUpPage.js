@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as api from '../api';
 import { navigate } from '@reach/router';
 import ErrorComponent from './ErrorComponent';
+import styles from './SignUpPage.module.css';
 
 class SignUpPage extends Component {
   state = {
@@ -14,19 +15,19 @@ class SignUpPage extends Component {
     const { username, name, avatar_url, error } = this.state;
     if (error) return <ErrorComponent error={error} />
     return (
-      <form onSubmit={this.postUser}>
-        <label>
+      <form onSubmit={this.postUser} className={`articles ${styles.signUp}`}>
+        <label htmlFor="username">
           enter username:
+        </label>
           <input name="username" value={username} onChange={this.handleFormChange} required />
-        </label>
-        <label>
+        <label htmlFor="name">
           enter name:
+        </label>
           <input name="name" value={name} onChange={this.handleFormChange} required />
-        </label>
-        <label>
+        <label htmlFor="avatar_url">
           enter avatar url:
-          <input name="avatar_url" value={avatar_url} onChange={this.handleFormChange} />
         </label>
+          <input name="avatar_url" value={avatar_url} onChange={this.handleFormChange} />
         <button type="submit">add new user</button>
       </form>
     );

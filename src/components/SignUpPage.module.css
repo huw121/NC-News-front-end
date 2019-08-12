@@ -1,0 +1,9 @@
+.signUp {
+  display: flex;
+  flex-direction: column;
+  margin: 10px 0px;
+}
+
+.signUp * {
+  margin: 10px 30px;
+}

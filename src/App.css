@@ -74,3 +74,13 @@ select:hover {
   color: var(--main-orange);
   cursor: pointer;
 }
+
+@media screen and (max-width: 1100px) {
+  .App {
+    grid-template-rows: auto auto 1fr;
+    grid-template-columns: 1fr;
+    grid-template-areas: "header" "sidebar" "articles";
+    grid-gap: 10px;
+    color: var(--main-navy);
+  }
+}

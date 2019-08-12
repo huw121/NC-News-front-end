@@ -31,3 +31,9 @@
   cursor: pointer;
 }
 
+@media screen and (max-width: 1100px) {
+  .IndividualArticlePageTop {
+    flex-direction: column-reverse;
+  }
+}
+

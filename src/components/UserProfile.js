@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import * as api from '../api';
 import { Link } from '@reach/router'
 import ErrorComponent from './ErrorComponent';
+import styles from './UserProfile.module.css';
 
 class UserProfile extends Component {
   state = {
@@ -16,9 +17,9 @@ class UserProfile extends Component {
     if (error) return <ErrorComponent error={error} />
     const { username, name, avatar_url } = user;
     return (
-      <article>
-        <h3>username: {username}</h3>
-        <h4>name: {name}</h4>
+      <article className={`articles ${styles.userProfile}`}>
+        <h2>username: {" " + username}</h2>
+        <h2>name: {" " + name}</h2>
         <img src={avatar_url} alt="profile pic" />
         <Link to={`/users/${username}`}><button>See all {username}'s articles</button></Link>
       </article>

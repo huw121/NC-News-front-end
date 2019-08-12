@@ -17,3 +17,10 @@ li {
   color: var(--main-orange);
   cursor: pointer;
 }
+
+@media screen and (max-width: 1100px) {
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}

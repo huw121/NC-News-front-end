@@ -29,3 +29,16 @@ header {
   margin: 2px;
 }
 
+@media screen and (max-width: 1100px) {
+
+  header {
+    grid-template: 1fr auto / 1fr;
+    grid-template-areas: "header" "users";
+  }
+
+  .userArea {
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+  }
+}
