@@ -75,7 +75,7 @@ select:hover {
   cursor: pointer;
 }
 
-@media screen and (max-width: 1100px) {
+@media (max-width: 1100px) {
   .App {
     grid-template-rows: auto auto 1fr;
     grid-template-columns: 1fr;

@@ -64,7 +64,8 @@ class ArticleList extends Component {
     const { location: { state: locationState }, topic, author } = this.props;
     if (topic !== prevProps.topic || author !== prevProps.author) check = true;
     if (check) this.fetchArticles(1)
-    if (locationState) this.articleDeletion(locationState.articleDeleted);
+    const articleDeleted = locationState ? locationState.articleDeleted  ?  locationState.articleDeleted : null : null;
+    if (articleDeleted) this.articleDeletion(articleDeleted);
     
   }
 
