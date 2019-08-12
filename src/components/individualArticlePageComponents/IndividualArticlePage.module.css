@@ -35,5 +35,8 @@
   .IndividualArticlePageTop {
     flex-direction: column-reverse;
   }
+  h1 {
+    margin: 10px 30px;
+  }
 }
 
