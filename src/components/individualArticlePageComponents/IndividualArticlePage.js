@@ -6,6 +6,7 @@ import CommentsList from './CommentsList';
 import ErrorComponent from '../ErrorComponent';
 import styles from './IndividualArticlePage.module.css';
 import LoaderSpinner from '../Loader';
+import convertCreatedAt from '../../utils/convertCreated';
 
 class IndividualArticlePage extends Component {
   state = {
@@ -30,7 +31,7 @@ class IndividualArticlePage extends Component {
         </div>
         <div className={styles.content}>
         <Link to={`/topics/${topic}`}><p>{topic}</p></Link>
-        <p>Created at: {created_at}</p>
+        <p>created at: {convertCreatedAt(created_at)}</p>
         <Link to={`/users/${author}`}><p>created by: {author}</p></Link>
         <p className={styles.body}>{body}</p>
         <p>comments: {comment_count}</p>
