@@ -4,6 +4,10 @@
   flex-direction: column;
 }
 
+.articleList h1 {
+  margin: 10px 30px;
+}
+
 .postButton {
   margin: 10px 20px;
   font-size: 1em;

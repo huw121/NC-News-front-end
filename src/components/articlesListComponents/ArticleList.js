@@ -25,7 +25,7 @@ class ArticleList extends Component {
 
   render() {
     const { isLoading, articles, page, maxPage, showForm, error } = this.state;
-    const { location: { state: locationState }, user, topics } = this.props;
+    const { location: { state: locationState }, user, topics, topic, author } = this.props;
     const articleDeleted = locationState ? locationState.articleDeleted : null;
     if (error) return <ErrorComponent error={error} />
     return (
@@ -36,6 +36,7 @@ class ArticleList extends Component {
           ? <ArticleForm user={user} topics={topics} addNewArticle={this.addNewArticle} />
           : (
             <>
+            <h1>Articles: {author ? author : topic ? topic : ''}</h1>
               <div>
                 <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
               </div>
