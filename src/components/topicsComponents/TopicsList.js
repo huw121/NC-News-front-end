@@ -31,6 +31,7 @@ class TopicsList extends Component {
 
   addNewTopic = (topic) => {
     this.props.handleNewTopics(topic);
+    this.setState({showForm: false})
   }
 }
 

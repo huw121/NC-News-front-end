@@ -6,6 +6,7 @@ import Paginator from '../Paginator';
 import CommentForm from './CommentForm';
 import ErrorComponent from '../ErrorComponent';
 import styles from '../articlesListComponents/ArticleList.module.css';
+import LoaderSpinner from '../Loader';
 
 class CommentsList extends Component {
   state = {
@@ -35,6 +36,7 @@ class CommentsList extends Component {
         <Paginator fetchMethod={this.fetchComments} p={page} pMax={maxPage} />
         {deletedComment === "success" && <p>comment successfully deleted!</p>}
         {deletedComment === "failed" && <p>oops! something went wrong...</p>}
+        {isLoading && <LoaderSpinner />}
         {!isLoading && comments.map(comment => {
           return <CommentCard key={comment.comment_id} {...comment} user={user} commentDeletion={this.commentDeletion} />
         })}
@@ -74,14 +76,15 @@ class CommentsList extends Component {
     this.props.updateCommentCount(1);
     this.setState(({ comments }) => ({
       comments: [comment, ...comments],
-      showForm: false
+      showForm: false,
+      isLoading: false
     }))
   }
 
   commentDeletion = (id) => {
     if (id) this.props.updateCommentCount(-1);
     this.setState(({ comments }) => {
-      if (!id) return {deletedComment: "failed"}
+      if (!id) return { deletedComment: "failed" }
       return {
         comments: comments.filter(comment => comment.comment_id !== id),
         deletedComment: "success"

@@ -5,7 +5,7 @@ import styles from './LoaderSpinner.module.css';
 const LoaderSpinner = () => {
 
   return (
-    <div class={styles.loader}>
+    <div className={styles.loader}>
       <Loader type="TailSpin" color="#0b3c5d" height={80} width={80} />
     </div>
   );

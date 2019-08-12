@@ -2,21 +2,23 @@ import React, { Component } from 'react';
 import * as api from '../../api';
 import ErrorComponent from '../ErrorComponent';
 import styles from './CommentForm.module.css';
+import LoaderSpinner from '../Loader';
 
 
 class CommentForm extends Component {
   state = {
     body: '',
-    error: null
+    error: null,
+    isLoading: false
   }
 
   render() {
-    const {error} = this.state;
+    const { error, isLoading } = this.state;
     if (error) return <ErrorComponent error={error} />
     return (
       <form onSubmit={this.handleCommentSubmit} className={styles.commentForm}>
         <textarea onChange={this.handleBodyChange} value={this.state.body} required></textarea>
-        <button type="submit">submit comment</button>
+        {isLoading ? <LoaderSpinner /> : <button type="submit">submit comment</button>}
       </form>
     );
   }
@@ -26,17 +28,19 @@ class CommentForm extends Component {
   }
 
   handleCommentSubmit = (e) => {
-    const { id, user, addNewComment } = this.props;
     e.preventDefault();
-    api.postComment(id, user, this.state.body)
-      .then(comment => {
-        addNewComment(comment);
-      })
-      .catch(({ response: { data: { message }, status } }) => {
-        this.setState({
-          error: { message, status }
+    this.setState({ isLoading: true }, () => {
+      const { id, user, addNewComment } = this.props;
+      api.postComment(id, user, this.state.body)
+        .then(comment => {
+          addNewComment(comment);
         })
-      })
+        .catch(({ response: { data: { message }, status } }) => {
+          this.setState({
+            error: { message, status }
+          })
+        })
+    })
   }
 }
 

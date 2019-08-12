@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import * as api from '../../api';
 import ErrorComponent from '../ErrorComponent';
 import styles from './ArticleForm.module.css';
+import LoaderSpinner from '../Loader';
 
 class ArticleForm extends Component {
   state = {
     body: '',
     title: '',
     topic: null,
-    error: null
+    error: null,
+    isLoading: false
   }
   render() {
-    const { body, title, error } = this.state;
+    const { body, title, error, isLoading } = this.state;
     const { topics } = this.props;
     if (error) return <ErrorComponent error={error} />
     return (
@@ -33,7 +35,7 @@ class ArticleForm extends Component {
           enter body:
         </label>
         <textarea name="body" onChange={this.handleFormChange} value={body} required></textarea>
-        <button type="submit">post article</button>
+        {isLoading ? <LoaderSpinner /> : <button type="submit">post article</button>}
       </form>
     );
   }
@@ -46,17 +48,19 @@ class ArticleForm extends Component {
 
   postArticle = (e) => {
     e.preventDefault();
-    const { body, title, topic } = this.state;
-    const { user: author, addNewArticle } = this.props;
-    api.postArticle({ body, title, topic, author })
-      .then(article => {
-        addNewArticle(article);
-      })
-      .catch(({ response: { data: { message }, status } }) => {
-        this.setState({
-          error: { message, status },
+    this.setState({ isLoading: true }, () => {
+      const { body, title, topic } = this.state;
+      const { user: author, addNewArticle } = this.props;
+      api.postArticle({ body, title, topic, author })
+        .then(article => {
+          addNewArticle(article);
         })
-      })
+        .catch(({ response: { data: { message }, status } }) => {
+          this.setState({
+            error: { message, status },
+          })
+        })
+    })
   }
 }
 

@@ -27,7 +27,6 @@ class ArticleList extends Component {
     const { isLoading, articles, page, maxPage, showForm, error } = this.state;
     const { location: { state: locationState }, user, topics } = this.props;
     const articleDeleted = locationState ? locationState.articleDeleted : null;
-    if (isLoading) return <LoaderSpinner />
     if (error) return <ErrorComponent error={error} />
     return (
       <main className={`articles ${styles.articleList}`}>
@@ -43,7 +42,7 @@ class ArticleList extends Component {
               <div>
                 <Paginator fetchMethod={this.fetchArticles} p={page} pMax={maxPage} />
               </div>
-              {articles.map(article => {
+              {isLoading ? <LoaderSpinner /> : articles.map(article => {
                 return <ArticleCard key={article.article_id} {...article} path={this.props.uri} />
               })}
             </>
@@ -65,9 +64,9 @@ class ArticleList extends Component {
     const { location: { state: locationState }, topic, author } = this.props;
     if (topic !== prevProps.topic || author !== prevProps.author) check = true;
     if (check) this.fetchArticles(1)
-    const articleDeleted = locationState ? locationState.articleDeleted  ?  locationState.articleDeleted : null : null;
+    const articleDeleted = locationState ? locationState.articleDeleted ? locationState.articleDeleted : null : null;
     if (articleDeleted) this.articleDeletion(articleDeleted);
-    
+
   }
 
   toggleForm = () => {
@@ -101,17 +100,19 @@ class ArticleList extends Component {
   }
 
   fetchArticles = (p) => {
-    const { topic, author } = this.props;
-    api.getData('articles', { ...this.state.queries, p, topic, author })
-      .then(({ articles, totalCount }) => {
-        this.setState({ articles, showForm: false, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5) });
-      })
-      .catch(({ response: { data: { message }, status } }) => {
-        this.setState({
-          error: { message, status },
-          isLoading: false
+    this.setState({ isLoading: true }, () => {
+      const { topic, author } = this.props;
+      api.getData('articles', { ...this.state.queries, p, topic, author })
+        .then(({ articles, totalCount }) => {
+          this.setState({ articles, showForm: false, isLoading: false, page: p, maxPage: Math.ceil(totalCount / 5) });
         })
-      })
+        .catch(({ response: { data: { message }, status } }) => {
+          this.setState({
+            error: { message, status },
+            isLoading: false
+          })
+        })
+    })
   }
 }
 

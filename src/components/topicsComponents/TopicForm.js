@@ -2,16 +2,18 @@ import React, { Component } from 'react';
 import * as api from '../../api';
 import ErrorComponent from '../ErrorComponent';
 import styles from './topicForm.module.css';
+import LoaderSpinner from '../Loader';
 
 class TopicForm extends Component {
   state = {
     slug: '',
     description: '',
-    error: null
+    error: null,
+    isLoading: false
   }
 
   render() {
-    const { slug, description, error } = this.state;
+    const { slug, description, error, isLoading } = this.state;
     if (error) return <ErrorComponent error={error} />
     return (
       <form onSubmit={this.handleTopicSubmit} className={styles.topicForm}>
@@ -23,7 +25,7 @@ class TopicForm extends Component {
           enter topic description:
         </label>
         <textarea name="description" onChange={this.handleFormChange} value={description} required></textarea>
-        <button type="submit">submit topic</button>
+        {isLoading ? <LoaderSpinner /> : <button type="submit">submit topic</button>}
       </form>
     );
   }
@@ -35,17 +37,20 @@ class TopicForm extends Component {
   }
 
   handleTopicSubmit = (e) => {
-    const { addNewTopic } = this.props;
     e.preventDefault();
-    api.postTopic(this.state)
-      .then(topic => {
-        addNewTopic(topic);
-      })
-      .catch(({ response: { data: { message }, status } }) => {
-        this.setState({
-          error: { message, status }
+    this.setState({ isLoading: true }, () => {
+      const { addNewTopic } = this.props;
+      const { error, isLoading, ...newTopic } = this.state;
+      api.postTopic(newTopic)
+        .then(topic => {
+          addNewTopic(topic);
         })
-      })
+        .catch(({ response: { data: { message }, status } }) => {
+          this.setState({
+            error: { message, status }
+          })
+        })
+    })
   }
 }
 
