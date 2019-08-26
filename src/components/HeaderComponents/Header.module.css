@@ -24,9 +24,12 @@ header {
   justify-content: space-around;
 }
 
+.userArea * {
+  margin: 5px 0px;
+}
+
 .userItems {
   font-size: 1em;
-  margin: 2px;
 }
 
 @media screen and (max-width: 1100px) {

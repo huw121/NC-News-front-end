@@ -1,6 +1,9 @@
 # NC News
 This is my react based front-end for our news aggregation style app.
 
+## Live version
+A live version hosted on Netlify can be found [here](https://huws-nc-news.netlify.com/).
+
 ## Running the project locally
 First, clone the repo
 ```bash
@@ -31,9 +34,6 @@ To run an instance of the site in your browser, please run:
   npm start
 
 ```
-
-## Live version
-A live version hosted on Netlify can be found [here](https://huws-nc-news.netlify.com/).
 
 ## Back End
 The repo for my back end can be found [here](https://github.com/huw121/NC-News).
