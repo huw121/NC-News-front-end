@@ -36,7 +36,7 @@ class ArticleList extends Component {
           ? <ArticleForm user={user} topics={topics} addNewArticle={this.addNewArticle} />
           : (
             <>
-            <h1>Articles: {author ? author : topic ? topic : ''}</h1>
+              <h1>Articles: {author ? author : topic ? topic : ''}</h1>
               <div>
                 <Sorter updateQueries={this.updateQueries} includeCommentCount={true} />
               </div>
@@ -93,10 +93,13 @@ class ArticleList extends Component {
   }
 
   articleDeletion = (id) => {
-    if (this.state.articles.some(({ article_id }) => article_id === +id)) {
-      this.setState(({ articles }) => ({
-        articles: articles.filter(article => article.article_id !== +id),
-      }))
+    const { articles } = this.state;
+    if (articles) {
+      if (articles.some(({ article_id }) => article_id === +id)) {
+        this.setState(({ articles }) => ({
+          articles: articles.filter(article => article.article_id !== +id),
+        }))
+      }
     }
   }
 
